@@ -1,0 +1,16 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "description": "JavaScript Dashboard Project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Eric Liu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
