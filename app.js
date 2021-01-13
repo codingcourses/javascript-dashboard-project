@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
+const NodeCache = require('node-cache');
 
 const quotes = require('./quotes.json');
 
 const app = express();
+const cache = new NodeCache({ stdTTL: 6000, checkperiod: 7200 });
 
 app.use(express.static(__dirname + '/public'));
 
@@ -23,55 +25,79 @@ app.get('/quote', (req, res) => {
 });
 
 app.get('/weather', async (req, res) => {
-  const {
-    data: {
-      city,
-      region_code: region,
-      latitude,
-      longitude,
-    },
-  } = await axios.get(`http://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`);
+  const resultCached = cache.get('weather');
+  if (resultCached) {
+    res.send(resultCached);
+    return;
+  }
 
-  const {
-    data: {
-      main: { temp },
-      weather: [{ main: type }],
-    },
-  } = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.OPENWEATHERMAP_API_KEY}`);
+  try {
+    const {
+      data: {
+        city,
+        region_code: region,
+        latitude,
+        longitude,
+      },
+    } = await axios.get(`http://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`);
 
-  const result = {
-    location: `${city}, ${region}`,
-    weather: {
-      temp,
-      type,
-    },
-  };
+    const {
+      data: {
+        main: { temp },
+        weather: [{ main: type }],
+      },
+    } = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.OPENWEATHERMAP_API_KEY}`);
 
-  res.send(result);
+    const result = {
+      location: `${city}, ${region}`,
+      weather: {
+        temp,
+        type,
+      },
+    };
+
+    cache.set('weather', result);
+
+    res.send(result);
+  } catch (e) {
+    res.status(400).send({ error: 'Error retrieving location and weather information' });
+  }
 });
 
 app.get('/background-image', async (req, res) => {
-  const {
-    data: {
-      urls: {
-        full: imageUrl,
-      },
-      user: {
-        name: creatorName,
-        links: {
-          html: creatorUrl,
+  const resultCached = cache.get('background-image');
+  if (resultCached) {
+    res.send(resultCached);
+    return;
+  }
+
+  try {
+    const {
+      data: {
+        urls: {
+          full: imageUrl,
+        },
+        user: {
+          name: creatorName,
+          links: {
+            html: creatorUrl,
+          },
         },
       },
-    },
-  } = await axios.get(`http://api.unsplash.com/photos/random?collections=12292991&client_id=${process.env.UNSPLASH_API_KEY}`);
+    } = await axios.get(`http://api.unsplash.com/photos/random?collections=12292991&client_id=${process.env.UNSPLASH_API_KEY}`);
 
-  const result = {
-    imageUrl,
-    creatorName,
-    creatorUrl,
-  };
+    const result = {
+      imageUrl,
+      creatorName,
+      creatorUrl,
+    };
 
-  res.send(result);
+    cache.set('background-image', result);
+
+    res.send(result);
+  } catch (e) {
+    res.status(400).send({ error: 'Error retrieving background image' });
+  }
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
