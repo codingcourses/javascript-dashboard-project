@@ -50,4 +50,28 @@ app.get('/weather', async (req, res) => {
   res.send(result);
 });
 
+app.get('/background-image', async (req, res) => {
+  const {
+    data: {
+      urls: {
+        full: imageUrl,
+      },
+      user: {
+        name: creatorName,
+        links: {
+          html: creatorUrl,
+        },
+      },
+    },
+  } = await axios.get(`http://api.unsplash.com/photos/random?collections=12292991&client_id=${process.env.UNSPLASH_API_KEY}`);
+
+  const result = {
+    imageUrl,
+    creatorName,
+    creatorUrl,
+  };
+
+  res.send(result);
+});
+
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
