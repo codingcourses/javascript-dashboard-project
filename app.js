@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 
 const quotes = require('./quotes.json');
 
@@ -19,6 +20,34 @@ function randomIntFromInterval(min, max) {
 app.get('/quote', (req, res) => {
   const index = randomIntFromInterval(0, quotes.length - 1);
   res.send({ data: quotes[index] });
+});
+
+app.get('/weather', async (req, res) => {
+  const {
+    data: {
+      city,
+      region_code: region,
+      latitude,
+      longitude,
+    },
+  } = await axios.get(`http://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`);
+
+  const {
+    data: {
+      main: { temp },
+      weather: [{ main: type }],
+    },
+  } = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.OPENWEATHERMAP_API_KEY}`);
+
+  const result = {
+    location: `${city}, ${region}`,
+    weather: {
+      temp,
+      type,
+    },
+  };
+
+  res.send(result);
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
