@@ -56,7 +56,54 @@
     </div>
 
     <div class="uk-position-bottom-right">
-      Settings button
+      <a class="uk-button uk-button-default" href="#settings-modal" uk-toggle>Open</a>
+    </div>
+
+    <div id="settings-modal" class="settings-modal" uk-modal>
+      <div class="uk-modal-dialog">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+          <h2 class="uk-modal-title">Settings</h2>
+        </div>
+        <div class="uk-modal-body">
+          <div>
+            <div>Display name</div>
+            <input id="settings-display-name" class="uk-input" type="text">
+          </div>
+
+          <div>
+            <div>Default time format</div>
+            <select id="settings-default-time-format" class="uk-select">
+              <option value="12-hr">12 hours</option>
+              <option value="12-hr-am-pm">12 hours AM/PM</option>
+              <option value="24-hr">24 hours</option>
+            </select>
+          </div>
+
+          <div>
+            <div>Default temperature units</div>
+            <select id="settings-default-temperature-units" class="uk-select">
+              <option value="celsius">Celsius</option>
+              <option value="fahrenheit">Fahrenheit</option>
+              <option value="kelvin">Kelvin</option>
+            </select>
+          </div>
+
+          <div>
+            <div>Default search engine</div>
+            <select id="settings-default-search-engine" class="uk-select">
+              <option value="google">Google</option>
+              <option value="bing">Bing</option>
+              <option value="yahoo">Yahoo</option>
+              <option value="duck-duck-go">DuckDuckGo</option>
+            </select>
+          </div>
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+          <button id="settings-save-btn" class="uk-button uk-button-primary" type="button">Save</button>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>

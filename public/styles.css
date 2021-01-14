@@ -3,3 +3,7 @@ body {
   background-color: #000;
   color: #fff;
 }
+
+.settings-modal {
+  color: #666;
+}
