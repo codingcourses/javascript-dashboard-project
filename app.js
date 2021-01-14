@@ -21,7 +21,7 @@ function randomIntFromInterval(min, max) {
 
 app.get('/quote', (req, res) => {
   const index = randomIntFromInterval(0, quotes.length - 1);
-  res.send({ data: quotes[index] });
+  res.send(quotes[index]);
 });
 
 app.get('/weather', async (req, res) => {
