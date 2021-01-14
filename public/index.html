@@ -7,10 +7,58 @@
 
     <title>Dashboard Project</title>
 
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.10/dist/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.10/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.10/dist/js/uikit-icons.min.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/bc9811a2b9.js" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
+    <div class="uk-position-top-left">
+      <!-- Search -->
+      <div class="uk-search uk-search-navbar">
+        <span uk-search-icon></span>
+        <input id="search" class="uk-search-input" type="search" placeholder="Search...">
+      </div>
+    </div>
+
+    <div class="uk-position-top-right">
+      <!-- Location and weather -->
+      <div>
+        <span id="weather-type">
+          <i class="fas fa-cloud-rain"></i>
+        </span>
+        <span id="weather-temp">20&deg;C</span>
+        <div id="location">Toronto, ON</div>
+      </div>
+    </div>
+
+    <div class="uk-position-center">
+      <div id="time">12:00</div>
+      <div id="greeting">Good morning, Eric.</div>
+    </div>
+
+    <div class="uk-position-bottom-left">
+      <div id="attribution">
+        Photo by <a href="https://unsplash.com/@nasa">NASA</a> on <a href="https://unsplash.com">Unsplash</a>
+      </div>
+    </div>
+
+    <div class="uk-position-bottom-center">
+      <div id="quote">"This is a quote." - Benjamin Franklin</div>
+    </div>
+
+    <div class="uk-position-bottom-right">
+      Settings button
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
