@@ -84,7 +84,7 @@ app.get('/background-image', async (req, res) => {
           },
         },
       },
-    } = await axios.get(`http://api.unsplash.com/photos/random?collections=12292991&client_id=${process.env.UNSPLASH_API_KEY}`);
+    } = await axios.get(`http://api.unsplash.com/photos/random?collections=1111575&client_id=${process.env.UNSPLASH_API_KEY}`);
 
     const result = {
       imageUrl,
