@@ -6,7 +6,7 @@ class Model {
   #onChange;
 
   constructor() {
-    // { displayName, defaultTimeFormat, defaultTemperatureUnits, defaultSearchEngine }
+    // { displayName, timeFormat, temperatureUnits, searchEngine }
     this.#settings = localStorage.getItem(LOCAL_STORAGE_KEY)
       ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
       : DEFAULT_SETTINGS;
@@ -74,9 +74,9 @@ class View {
 
   // modal
   #settingsDisplayName;
-  #settingsDefaultTimeFormat;
-  #settingsDefaultTemperatureUnits;
-  #settingsDefaultSearchEngine;
+  #settingsTimeFormat;
+  #settingsTemperatureUnits;
+  #settingsSearchEngine;
   #settingsSaveButton;
 
   #timeInterval;
@@ -94,9 +94,9 @@ class View {
     this.#body = View.getElement('body');
 
     this.#settingsDisplayName = View.getElement('#settings-display-name');
-    this.#settingsDefaultTimeFormat = View.getElement('#settings-default-time-format');
-    this.#settingsDefaultTemperatureUnits = View.getElement('#settings-default-temperature-units');
-    this.#settingsDefaultSearchEngine = View.getElement('#settings-default-search-engine');
+    this.#settingsTimeFormat = View.getElement('#settings-time-format');
+    this.#settingsTemperatureUnits = View.getElement('#settings-temperature-units');
+    this.#settingsSearchEngine = View.getElement('#settings-search-engine');
     this.#settingsSaveButton = View.getElement('#settings-save-btn');
 
     this.#timeInterval = null;
@@ -159,9 +159,9 @@ const LOCAL_STORAGE_KEY = 'DashboardProject';
 
 const DEFAULT_SETTINGS = {
   displayName: 'John Smith',
-  defaultTimeFormat: '12-hr',
-  defaultTemperatureUnits: 'celsius',
-  defaultSearchEngine: 'google',
+  timeFormat: '12-hr',
+  temperatureUnits: 'celsius',
+  searchEngine: 'google',
 };
 
 async function apiCall(endpoint) {
@@ -193,6 +193,5 @@ function getPartOfDay(date) {
     return 'evening';
   }
 }
-
 
 const app = new Controller(new Model(), new View());
