@@ -58,6 +58,23 @@ class Model {
     const data = await apiCall('/background-image');
     this.updateBackgroundImage(data);
   }
+
+  get settings() {
+    return this.#settings;
+  }
+
+  get weather() {
+    return this.#weather;
+  }
+
+  async initialize() {
+    await Promise.all([
+      this.requestQuote(),
+      this.requestWeather(),
+      this.requestBackgroundImage(),
+    ]);
+    this.#onChange('settings', this.#settings);
+  }
 }
 
 class View {
@@ -188,7 +205,67 @@ class Controller {
   constructor(model, view) {
     this.#model = model;
     this.#view = view;
+
+    this.#view.bindSearch(this.onSearch);
+    this.#view.bindSettingsButtonClick(this.onSettingsButtonClick);
+    this.#view.bindSettingsSaveButtonClick(this.onSettingsSaveButtonClick);
+
+    this.#model.bindOnChange(this.onDataChange);
+
+    // Initialize
+    this.#model.initialize();
+    // this.#view.updateTime(this.#model.settings.timeFormat);
+    // this.#view.updateGreeting(this.#model.settings.displayName);
   }
+
+  onSearch = query => {
+    let searchUrl;
+    switch (this.#model.settings.searchEngine) {
+      case 'google':
+        searchUrl = `https://www.google.com/search?q=${query}`;
+        break;
+      case 'bing':
+        searchUrl = `https://www.bing.com/search?q=${query}`;
+        break;
+      case 'yahoo':
+        searchUrl = `https://search.yahoo.com/search?p=${query}`;
+        break;
+      case 'duck-duck-go':
+        searchUrl = `https://duckduckgo.com/?q=${query}`;
+        break;
+      default:
+        return;
+    }
+    window.open(encodeURI(searchUrl));
+  };
+
+  onSettingsButtonClick = () => this.#view.updateSettings(this.#model.settings);
+
+  onSettingsSaveButtonClick = settings => {
+    this.#model.updateSettings(settings);
+    this.#model.save();
+  };
+
+  onDataChange = (key, data) => {
+    switch (key) {
+      case 'settings':
+        this.#view.updateTime(data.timeFormat);
+        this.#view.updateGreeting(data.displayName);
+        this.#view.updateWeather(this.#model.weather, data.temperatureUnits);
+        break;
+      case 'quote':
+        this.#view.updateQuote(data);
+        break;
+      case 'weather':
+        this.#view.updateWeather(data, this.#model.settings.temperatureUnits);
+        break;
+      case 'backgroundImage':
+        this.#view.updateBackgroundImage(data);
+        break;
+      default:
+        break;
+    }
+  };
 }
 
 const LOCAL_STORAGE_KEY = 'DashboardProject';
