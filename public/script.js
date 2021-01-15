@@ -78,6 +78,7 @@ class View {
   #settingsTemperatureUnits;
   #settingsSearchEngine;
   #settingsSaveButton;
+  #settingsButton;
 
   #timeInterval;
 
@@ -98,6 +99,7 @@ class View {
     this.#settingsTemperatureUnits = View.getElement('#settings-temperature-units');
     this.#settingsSearchEngine = View.getElement('#settings-search-engine');
     this.#settingsSaveButton = View.getElement('#settings-save-btn');
+    this.#settingsButton = View.getElement('#settings-btn');
 
     this.#timeInterval = null;
   }
@@ -142,6 +144,40 @@ class View {
   updateBackgroundImage({ imageUrl, creatorName, creatorUrl }) {
     this.#body.style.backgroundImage = `url(${imageUrl})`;
     this.#attribution.innerHTML = `Photo by <a href="${creatorUrl}">${creatorName}</a> on <a href="https://unsplash.com">Unsplash</a>`
+  }
+
+  updateWeather({ location, weather: { temp, type } }, temperatureUnits) {
+    this.#location.textContent = location;
+    this.#weatherTemp.textContent = getFormattedTemperature(temp, temperatureUnits);
+    this.#weatherType.innerHTML = getWeatherIcon(type);
+  }
+
+  bindSettingsSaveButtonClick(handler) {
+    this.#settingsSaveButton.addEventListener('click', event => {
+      if (!this.#settingsDisplayName) {
+        return;
+      }
+
+      handler({
+        displayName: this.#settingsDisplayName.value.trim(),
+        timeFormat: this.#settingsTimeFormat.value,
+        temperatureUnits: this.#settingsTemperatureUnits.value,
+        searchEngine: this.#settingsSearchEngine.value,
+      });
+
+      UIkit.modal('#settings-modal').hide();
+    });
+  }
+
+  updateSettings({ displayName, timeFormat, temperatureUnits, searchEngine }) {
+    this.#settingsDisplayName.value = displayName;
+    this.#settingsTimeFormat.value = timeFormat;
+    this.#settingsTemperatureUnits.value = temperatureUnits;
+    this.#settingsSearchEngine.value = searchEngine;
+  }
+
+  bindSettingsButtonClick(handler) {
+    this.#settingsButton.addEventListener('click', () => handler());
   }
 }
 
@@ -191,6 +227,36 @@ function getPartOfDay(date) {
     return 'afternoon';
   } else {
     return 'evening';
+  }
+}
+
+function getFormattedTemperature(temperature, temperatureUnits) {
+  switch (temperatureUnits) {
+    case 'celsius':
+      return `${Math.floor(temperature - 273.15)}°C`;
+    case 'fahrenheit':
+      return `${Math.floor(temperature * (9/5) - 459.67)}°F`;
+    case 'kelvin':
+      return `${Math.floor(temperature)}K`;
+  }
+}
+
+function getWeatherIcon(type) {
+  switch (type) {
+    case 'Thunderstorm':
+      return '<i class="fas fa-bolt"></i>';
+    case 'Drizzle':
+      return '<i class="fas fa-cloud-rain"></i>';
+    case 'Rain':
+      return '<i class="fas fa-cloud-showers-heavy"></i>';
+    case 'Snow':
+      return '<i class="fas fa-snowflake"></i>';
+    case 'Clear':
+      return '<i class="fas fa-sun"></i>';
+    case 'Clouds':
+      return '<i class="fas fa-cloud-sun"></i>';
+    default:
+      return '<i class="fas fa-smog"></i>';
   }
 }
 
