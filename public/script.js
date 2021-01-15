@@ -214,8 +214,6 @@ class Controller {
 
     // Initialize
     this.#model.initialize();
-    // this.#view.updateTime(this.#model.settings.timeFormat);
-    // this.#view.updateGreeting(this.#model.settings.displayName);
   }
 
   onSearch = query => {
