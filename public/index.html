@@ -22,16 +22,14 @@
 
   <body>
     <div class="uk-position-top-left">
-      <!-- Search -->
-      <div class="uk-search uk-search-navbar">
+      <div class="uk-search uk-search-navbar search-container">
         <span uk-search-icon></span>
-        <input id="search" class="uk-search-input" type="search" placeholder="Search...">
+        <input id="search" class="uk-search-input search" type="search" placeholder="Search...">
       </div>
     </div>
 
     <div class="uk-position-top-right">
-      <!-- Location and weather -->
-      <div>
+      <div class="weather">
         <span id="weather-type"></span>
         <span id="weather-temp"></span>
         <div id="location"></div>
@@ -39,20 +37,20 @@
     </div>
 
     <div class="uk-position-center">
-      <div id="time"></div>
-      <div id="greeting"></div>
+      <div id="time" class="time"></div>
+      <div id="greeting" class="greeting"></div>
     </div>
 
     <div class="uk-position-bottom-left">
-      <div id="attribution"></div>
+      <div id="attribution" class="attribution"></div>
     </div>
 
     <div class="uk-position-bottom-center">
-      <div id="quote"></div>
+      <div id="quote" class="quote"></div>
     </div>
 
     <div class="uk-position-bottom-right">
-      <a id="settings-btn" href="#settings-modal" uk-icon="icon: cog" uk-toggle></a>
+      <a id="settings-btn" class="settings-btn" href="#settings-modal" uk-icon="icon: cog" uk-toggle></a>
     </div>
 
     <div id="settings-modal" class="settings-modal" uk-modal>
@@ -62,12 +60,12 @@
           <h2 class="uk-modal-title">Settings</h2>
         </div>
         <div class="uk-modal-body">
-          <div>
+          <div class="modal-item">
             <div>Display name</div>
             <input id="settings-display-name" class="uk-input" type="text">
           </div>
 
-          <div>
+          <div class="modal-item">
             <div>Time format</div>
             <select id="settings-time-format" class="uk-select">
               <option value="12-hr">12 hours</option>
@@ -76,7 +74,7 @@
             </select>
           </div>
 
-          <div>
+          <div class="modal-item">
             <div>Temperature units</div>
             <select id="settings-temperature-units" class="uk-select">
               <option value="celsius">Celsius</option>
@@ -85,7 +83,7 @@
             </select>
           </div>
 
-          <div>
+          <div class="modal-item">
             <div>Search engine</div>
             <select id="settings-search-engine" class="uk-select">
               <option value="google">Google</option>

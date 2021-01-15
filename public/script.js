@@ -160,7 +160,7 @@ class View {
 
   updateBackgroundImage({ imageUrl, creatorName, creatorUrl }) {
     this.#body.style.backgroundImage = `url(${imageUrl})`;
-    this.#attribution.innerHTML = `Photo by <a href="${creatorUrl}">${creatorName}</a> on <a href="https://unsplash.com">Unsplash</a>`
+    this.#attribution.innerHTML = `Photo by <a href="${creatorUrl}">${creatorName}</a><br> on <a href="https://unsplash.com">Unsplash</a>`
   }
 
   updateWeather({ location, weather: { temp, type } }, temperatureUnits) {

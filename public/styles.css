@@ -1,9 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500');
+
+/* Set core body defaults */
 body {
   min-height: 100vh;
   background-color: #000;
   color: #fff;
+  margin: 0;
+  padding: 0;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
 }
 
+/* Override UIkit Styles */
+.uk-search-icon {
+  color: #fff !important;
+}
+
+.uk-modal-title {
+  font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.uk-input, .uk-select, .uk-button {
+  border-radius: 0.35rem;
+}
+
+.uk-modal-dialog {
+  border-radius: 0.5rem;
+}
+
+.uk-modal-header {
+  border-top-left-radius: 0.5rem !important;
+  border-top-right-radius: 0.5rem !important;
+}
+
+.uk-modal-footer {
+  border-bottom-left-radius: 0.5rem !important;
+  border-bottom-right-radius: 0.5rem !important;
+}
+
+/* Dashboard Project Styles */
 .settings-modal {
   color: #666;
+}
+
+.time {
+  font-size: 10rem;
+  font-weight: 500;
+  text-shadow: 1px 1px 10px #000;
+  text-align: center;
+}
+
+.greeting {
+  font-size: 2.5rem;
+  font-weight: 400;
+  text-shadow: 1px 1px 10px #000;
+  text-align: center;
+}
+
+.attribution {
+  font-size: 1.25rem;
+}
+
+.attribution a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.quote {
+  max-width: 25vw;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.search {
+  color: #fff;
+}
+
+.settings-btn svg {
+  width: 30px;
+  height: 30px;
+}
+
+.weather {
+  font-size: 1.25rem;
+  text-align: right;
+}
+
+.search-container, .attribution {
+  margin-left: 1rem;
+}
+
+.search-container, .weather {
+  margin-top: 1rem;
+}
+
+.weather, .settings-btn {
+  margin-right: 1rem;
+}
+
+.attribution, .quote, .settings-btn {
+  margin-bottom: 1rem;
+}
+
+.modal-item {
+  margin-bottom: 1rem;
 }
