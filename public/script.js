@@ -61,11 +61,87 @@ class Model {
 }
 
 class View {
-  constructor() {}
+  // dashboard
+  #search;
+  #weatherType;
+  #weatherTemp;
+  #location;
+  #time;
+  #greeting;
+  #attribution;
+  #quote;
+  #body;
+
+  // modal
+  #settingsDisplayName;
+  #settingsDefaultTimeFormat;
+  #settingsDefaultTemperatureUnits;
+  #settingsDefaultSearchEngine;
+  #settingsSaveButton;
+
+  #timeInterval;
+
+  constructor() {
+    this.#search = View.getElement('#search');
+    this.#weatherType = View.getElement('#weather-type');
+    this.#weatherTemp = View.getElement('#weather-temp');
+    this.#location = View.getElement('#location');
+    this.#time = View.getElement('#time');
+    this.#greeting = View.getElement('#greeting');
+    this.#attribution = View.getElement('#attribution');
+    this.#quote = View.getElement('#quote');
+
+    this.#body = View.getElement('body');
+
+    this.#settingsDisplayName = View.getElement('#settings-display-name');
+    this.#settingsDefaultTimeFormat = View.getElement('#settings-default-time-format');
+    this.#settingsDefaultTemperatureUnits = View.getElement('#settings-default-temperature-units');
+    this.#settingsDefaultSearchEngine = View.getElement('#settings-default-search-engine');
+    this.#settingsSaveButton = View.getElement('#settings-save-btn');
+
+    this.#timeInterval = null;
+  }
 
   static getElement(selector) {
     const elem = document.querySelector(selector);
     return elem;
+  }
+
+  bindSearch(handler) {
+    this.#search.addEventListener('keyup', event => {
+      if (!event.target.value) {
+        return;
+      }
+
+      if (event.code === 'Enter' || event.key === 'Enter' || event.keyCode === 13) {
+        handler(event.target.value);
+      }
+    });
+  }
+
+  updateTime(timeFormat) {
+    if (this.#timeInterval) {
+      clearInterval(this.#timeInterval);
+    }
+
+    this.#time.textContent = getFormattedTime(new Date(), timeFormat);
+
+    this.#timeInterval = setInterval(() => {
+      this.#time.textContent = getFormattedTime(new Date(), timeFormat);
+    }, 1000);
+  }
+
+  updateGreeting(displayName) {
+    this.#greeting.textContent = `Good ${getPartOfDay(new Date())}, ${displayName}.`;
+  }
+
+  updateQuote({ text, author }) {
+    this.#quote.textContent = `"${text}" - ${author}`;
+  }
+
+  updateBackgroundImage({ imageUrl, creatorName, creatorUrl }) {
+    this.#body.style.backgroundImage = `url(${imageUrl})`;
+    this.#attribution.innerHTML = `Photo by <a href="${creatorUrl}">${creatorName}</a> on <a href="https://unsplash.com">Unsplash</a>`
   }
 }
 
@@ -93,5 +169,30 @@ async function apiCall(endpoint) {
   const data = await response.json();
   return data;
 }
+
+function getFormattedTime(date, timeFormat) {
+  const hours = date.getHours();
+  const minutes = ('0' + date.getMinutes()).slice(-2);
+  switch (timeFormat) {
+    case '12-hr':
+      return `${hours === 0 ? '12' : hours % 12}:${minutes}`;
+    case '12-hr-am-pm':
+      return `${hours === 0 ? '12' : hours % 12}:${minutes} ${hours < 12 ? 'am' : 'pm'}`;
+    case '24-hr':
+      return `${hours}:${minutes}`;
+  }
+}
+
+function getPartOfDay(date) {
+  const hours = date.getHours();
+  if (hours >= 5 && hours < 12) {
+    return 'morning';
+  } else if (hours >= 12 && hours < 17) {
+    return 'afternoon';
+  } else {
+    return 'evening';
+  }
+}
+
 
 const app = new Controller(new Model(), new View());
