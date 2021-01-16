@@ -32,6 +32,8 @@ app.get('/weather', async (req, res) => {
   }
 
   try {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const endpoint = ip === '::1' ? 'check' : ip;
     const {
       data: {
         city,
@@ -39,7 +41,7 @@ app.get('/weather', async (req, res) => {
         latitude,
         longitude,
       },
-    } = await axios.get(`http://api.ipstack.com/check?access_key=${process.env.IPSTACK_API_KEY}`);
+    } = await axios.get(`http://api.ipstack.com/${endpoint}?access_key=${process.env.IPSTACK_API_KEY}`);
 
     const {
       data: {
